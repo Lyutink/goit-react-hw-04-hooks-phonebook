@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-//import PropTypes from "prop-types";
+//import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -19,69 +19,35 @@ const validationSchema = Yup.object({
     )
     .required("Please enter your phone number, it is required"),
 });
+///////////////////////////////////
+export default function ContactForm({ onSubmit }) {
+  return (
+    <Formik
+      enableReinitialize
+      initialValues={{ name: "", number: "" }}
+      validationSchema={validationSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        onSubmit(values);
+        setSubmitting(false);
+      }}
+    >
+      <Form autoComplete="off">
+        <ContainerForm>
+          <LabelForm htmlFor="name">Name</LabelForm>
+          <Field type="text" name="name" />
+          <ErrorMessage name="name" />
 
-class ContactForm extends Component {
-  // state = {
-  //     name: '',
-  //     number: ''
-  // };
+          <LabelForm htmlFor="name">Number</LabelForm>
+          <Field type="tel" name="number" />
+          <ErrorMessage name="number" />
 
-  // handleChange = event => {
-  //     // this.setState({
-  //     //     [event.currentTarget.name]: event.currentTarget.value,
-  //     // });
-  //     const { name, value } = event.currentTarget;
-
-  //     this.setState({ [name]: value });
-  // };
-
-  // handleSubmit = event => {
-  //    // event.preventDefault();
-
-  //     this.props.onSubmit(this.state);
-  //     this.reset();
-  // }
-
-  // handleContactInput = ({ name, number }) => {
-  //     this.setState({ name, number });
-  // }
-
-  // reset = () => {
-  //     this.setState({ name: '', number: '' });
-  // }
-
-  render() {
-    return (
-      <Formik
-        enableReinitialize
-        initialValues={{ name: "", number: "" }}
-        validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          this.props.onSubmit(values);
-          setSubmitting(false);
-        }}
-      >
-        <Form autoComplete="off">
-          <ContainerForm>
-            <LabelForm htmlFor="name">Name</LabelForm>
-            <Field type="text" name="name" />
-            <ErrorMessage name="name" />
-
-            <LabelForm htmlFor="name">Number</LabelForm>
-            <Field type="tel" name="number" />
-            <ErrorMessage name="number" />
-
-            <BtnForm type="submit">Add contact</BtnForm>
-          </ContainerForm>
-        </Form>
-      </Formik>
-    );
-  }
+          <BtnForm type="submit">Add contact</BtnForm>
+        </ContainerForm>
+      </Form>
+    </Formik>
+  );
 }
 
-// Section.propTypes = {
-//   title: PropTypes.string.isRequired,
-//   children: PropTypes.node,
-// };
-
-export default ContactForm;
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
